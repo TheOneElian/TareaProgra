@@ -8,7 +8,7 @@ class database:
         self.contraseña = contraseña,
         self.host = host,
         self.usuario = usuario
-        self.connection = None
+
 
     def connect(self):
         self.connection = psycopg2.connect(
@@ -50,6 +50,14 @@ def index():
 @app.route('/alumnos')
 def alumnos():
     return render_template("alumnos.html")
+
+@app.route('/profesores')
+def profesores():
+    return render_template("profesores.html")
+
+@app.route('/cursos')
+def cursos():
+    return render_template("cursos.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
