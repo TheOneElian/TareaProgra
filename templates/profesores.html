@@ -4,19 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profesores</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        h1{
+            color:red;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+     </style>
 </head>
 <body>
-    <h1 style="text-align: center; color: aquamarine; font-family: 'Courier New', Courier, monospace;">Profesores</h1>
-    <h2>Formulario</h2>
-    <form action="/" method="post">
-        <label for="id_profesor">ID del Profesor</label>
-        <input type="text" id_profesor="id_profesor" required> <input type="submit" value="Agregar"><br> <br>
-        <label for="nom_profesor">Nombre de profesor</label>
-        <input type="text" nom_profesor="nom_profesor" required> <input type="submit" value="Agregar"><br> <br>
-        <label for="materia_profesor">Materia que imparte</label>
-        <input type="text" materia_profesor="materia_profesor"> <input type="submit" value="Agregar">
-    </form>
-    <a href="/" >Inicio</a>
-    <a href="/profesores/agregar_profesor">Agregar curso</a>
+    <div class="container">
+        <h1>Profesores</h1>
+        <a href="/" >Inicio</a><br>
+        <a href="/profesores/agregar_profesor">Agregar profesor</a>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Materia</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profesor in profesores %}
+                <tr>
+                    <td> {{profesor.id_profesor}} </td>
+                    <td> {{profesor.nombre_profesor}} </td>
+                    <td> {{profesor.materia_profesor}} </td>
+                    <td>
+                        <a href="/profesores/editar_profesor/{{ profesor.id_profesor}}" class="btn btn-warning">Editar</a>
+                        <form action="/profesores/eliminar_profesor/{{ profesor.id_profesor }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
