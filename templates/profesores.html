@@ -6,11 +6,16 @@
     <title>Profesores</title>
 </head>
 <body>
-    <h1 style="text-align: center;">Profesores</h1>
+    <h1 style="text-align: center; color: aquamarine; font-family: 'Courier New', Courier, monospace;">Profesores</h1>
     <h2>Formulario</h2>
-    <form action="/" method="post"></form>
-    <label for="nom_profesor">Nombre de profesor</label>
-    <input type="text" id="id" nom_profesor="nom_profesor" required> <input type="submit" value="submit"><br>
+    <form action="/" method="post">
+        <label for="id_profesor">ID del Profesor</label>
+        <input type="text" id_profesor="id_profesor" required> <input type="submit" value="Agregar"><br> <br>
+        <label for="nom_profesor">Nombre de profesor</label>
+        <input type="text" nom_profesor="nom_profesor" required> <input type="submit" value="Agregar"><br> <br>
+        <label for="materia_profesor">Materia que imparte</label>
+        <input type="text" materia_profesor="materia_profesor"> <input type="submit" value="Agregar">
+    </form>
     <a href="/" >Inicio</a>
 </body>
 </html>
