@@ -80,6 +80,49 @@ def agregar_alumno():
         return redirect('/alumnos')
     return render_template("agregar_alumno.html")
 
+@app.route('/cursos/agregar_curso', methods=['GET', 'POST'])
+def agregar_curso():
+    if request.method == 'POST':
+        id_curso = request.form['id_curso']
+        nombre_curso = request.form['nombre_curso']
+
+        print(f"Id: {id_curso}, type: {type(id_curso)}")
+        print(f"Nombre: {nombre_curso}, type: {type(nombre_curso)}")
+
+        bd = Database()
+    
+        data = {
+            'id_curso': id_curso,
+            'nombre_curso': nombre_curso,
+        }
+
+        print(data)
+
+        bd.insertar_registro('cursos', data)
+        return redirect('/cursos')
+    return render_template("agregar_curso.html")
+
+@app.route('/profesores/agregar_profesor', methods=['GET', 'POST'])
+def agregar_profesor():
+    if request.method == 'POST':
+        id_profesor = request.form['id_profesor']
+        nombre_profesor = request.form['nombre_profesor']
+        materia_profesor = request.form['materia_profesor']
+
+        bd = Database()
+    
+        data = {
+            'id_profesor': id_profesor,
+            'nombre_profesor': nombre_profesor,
+            'materia_profesor': materia_profesor
+        }
+
+        print(data)
+
+        bd.insertar_registro('profesores', data)
+        return redirect('/profesores')
+    return render_template("agregar_profesor.html")
+
 if __name__ == '__main__':
     app.run(debug=True)
     bd = Database()
