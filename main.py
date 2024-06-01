@@ -27,7 +27,7 @@ class Database:
 
     def editar_registro(self,table, data, condition):
         try:
-            set_clause = '. '.join([f"{key} = %s" for key in data.keys()])
+            set_clause = ', '.join([f"{key} = %s" for key in data.keys()])
             values = tuple(data.values())
             update_query = f"UPDATE {table} SET {set_clause} WHERE {condition}"
             self.cursor.execute(update_query, values)
@@ -96,7 +96,7 @@ def profesores():
     bd.close_connection()
     return render_template("profesores.html", profesores=profesores)
 
-@app.route('/profesores/eliminar_profesor/<id_profesor>', methods=['POST'])
+@app.route('/profesores/eliminar_profesor/id_profesor>', methods=['POST'])
 def eliminar_profesor(id_profesor):
     bd = Database()
     condition = f"id_profesor = '{id_profesor}'"
@@ -104,10 +104,11 @@ def eliminar_profesor(id_profesor):
     bd.close_connection()
     return redirect('/profesores')
 
-@app.route('/profesores/editar_profesor/<id_profesor>', methods=['GET', 'POST'])
+@app.route('/profesores/editar_profesor/<int:id_profesor>', methods=['GET', 'POST'])
 def editar_profesor(id_profesor):
+    print(f"Editing professor with ID {id_profesor}")
     bd = Database()
-    condition = f"id_profesor = '{id_profesor}'"
+    condition = f"id_profesor = {id_profesor}"
     if request.method == 'POST':
         nombre_profesor = request.form['nombre_profesor']
         materia_profesor = request.form['materia_profesor']
@@ -122,8 +123,14 @@ def editar_profesor(id_profesor):
         return redirect('/profesores')
     
     profesor = bd.obtener_registros('profesores')
+    print(f"Professors data fetched from database: {profesores}")
     profesor = next((p for p in profesor if p['id_profesor'] == id_profesor), None)
+    print(f"Professor data: {profesor}")
     bd.close_connection()
+
+    if not profesor:
+        return "Profesor no encontrado", 404
+    
     return render_template('editar_profesor.html', profesor=profesor)
 
 @app.route('/cursos')
@@ -131,7 +138,6 @@ def cursos():
     return render_template("cursos.html") 
 
 @app.route('/alumnos/agregar_alumno', methods=['GET', 'POST'])
-
 def agregar_alumno():
     if request.method == 'POST':
         nombre = request.form['nombre']
