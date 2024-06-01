@@ -135,7 +135,10 @@ def editar_profesor(id_profesor):
 
 @app.route('/cursos')
 def cursos():
-    return render_template("cursos.html") 
+    bd = Database()
+    cursos = bd.obtener_registros('cursos')
+    bd.close_connection
+    return render_template("cursos.html", cursos=cursos) 
 
 @app.route('/alumnos/agregar_alumno', methods=['GET', 'POST'])
 def agregar_alumno():
@@ -169,20 +172,39 @@ def eliminar_alumno(id):
     bd.eliminar_registro('alumnos', condition)
     return redirect('/alumnos')
 
+@app.route('/alumnos/editar_alumno/<int:id>', methods=['GET', 'POST'])
+def editar_alumno(id):
+    bd = Database()
+    condition = f"id = {id}"
+    if request.method=='POST':
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        edad = request.form['edad']
+
+        data = {
+            'nombre': nombre,
+            'apellido': apellido,
+            'edad': edad
+        }
+        bd.editar_registro('alumnos', data, condition)
+        bd.close_connection()
+        return redirect('/alumnos')
+    
+    alumno = bd.obtener_registros('alumnos')
+    alumno = next((a for a in alumno if a['id'] == id), None)
+    bd.close_connection()
+    return render_template("editar_alumno.html", alumno=alumno)
+
 @app.route('/cursos/agregar_curso', methods=['GET', 'POST'])
 def agregar_curso():
     if request.method == 'POST':
-        id_curso = request.form['id_curso']
         nombre_curso = request.form['nombre_curso']
-
-        print(f"Id: {id_curso}, type: {type(id_curso)}")
         print(f"Nombre: {nombre_curso}, type: {type(nombre_curso)}")
 
         bd = Database()
     
         data = {
-            'id_curso': id_curso,
-            'nombre_curso': nombre_curso,
+            'nombre_curso': nombre_curso
         }
 
         print(data)
@@ -190,6 +212,31 @@ def agregar_curso():
         bd.insertar_registro('cursos', data)
         return redirect('/cursos')
     return render_template("agregar_curso.html")
+
+@app.route('/cursos/eliminar_curso/<int:id_curso>', methods=['POST'])
+def eliminar_curso(id_curso):
+    bd = Database()
+    condition = f"id_curso = {id_curso}"
+    bd.eliminar_registro('cursos', condition)
+    return redirect('/cursos')
+
+@app.route('/cursos/editar_curso/<int:id_curso>', methods=['GET', 'POST'])
+def editar_curso(id_curso):
+    bd = Database()
+    condition = f"id_curso = {id_curso}"
+    if request.method == 'POST':
+        nombre_curso = request.form['nombre_curso']
+        data = {
+            'nombre_curso': nombre_curso
+        }
+        bd.editar_registro('cursos', data, condition)
+        bd.close_connection()
+        return redirect('/cursos')
+    
+    curso = bd.obtener_registros('cursos')
+    curso = next((c for c in curso if c['id_curso'] == id_curso), None)
+    bd.close_connection()
+    return render_template("editar_curso.html", curso=curso)
 
 @app.route('/profesores/agregar_profesor', methods=['GET', 'POST'])
 def agregar_profesor():

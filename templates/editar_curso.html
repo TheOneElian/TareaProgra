@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Curso</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Curso</h1>
+        <a href="/cursos">Volver a Cursos</a>
+        <form action=   "{{ url_for('editar_curso', id_curso=curso['id_curso']) }}" method="post" class="mt-3">
+            <div class="form-group">
+                <label for="nombre">Nombre del Curso</label>
+                <input type="text" class="form-control" id="nombre_curso" name="nombre_curso" value="{{ curso['nombre_curso'] }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </form>
+    </div>
+</body>
+</html>
