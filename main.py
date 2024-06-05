@@ -87,7 +87,7 @@ def alumnos():
     bd = Database()
     alumnos = bd.obtener_registros('alumnos')
     bd.close_connection()
-    return render_template("alumnos.html", alumnos=alumnos)
+    return render_template("alumnos.html", alumnos=alumnos) #En alumnos=alumnos lo que hago es pasar la variable local al template
 
 @app.route('/profesores')
 def profesores():
